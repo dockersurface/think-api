@@ -150,7 +150,7 @@ module.exports = class extends Base {
         goods_sn: goodsItem.goods_sn,
         product_id: goodsItem.product_id,
         goods_name: goodsItem.goods_name,
-        list_pic_url: goodsItem.primary_pic_url,
+        list_pic_url: goodsItem.list_pic_url,
         market_price: goodsItem.market_price,
         retail_price: goodsItem.retail_price,
         number: goodsItem.number,

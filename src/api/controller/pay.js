@@ -29,6 +29,22 @@ module.exports = class extends Base {
         total_fee: parseInt(orderInfo.actual_price * 100),
         spbill_create_ip: ''
       });
+
+      const orderGoods = await this.model('order_goods').where({order_id: orderInfo.id}).find();
+      // console.log(orderGoods)
+      const goodsId = orderGoods.goods_id;
+      const product = await this.model('product').where({goods_id: goodsId}).find();
+      const goods = await this.model('goods').where({id: goodsId}).find();
+      await this.model('product').where({goods_id: goodsId}).update({
+        goods_number: product.goods_number - 1
+      });
+      await this.model('goods').where({id: goodsId}).update({
+        goods_number: goods.goods_number - 1,
+        sell_volume: goods.sell_volume + 1
+      });
+
+      await this.model('order').updatePayStatus(orderId, 201);
+
       return this.success(returnParams);
     } catch (err) {
       return this.fail('微信支付失败');

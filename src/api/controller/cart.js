@@ -84,7 +84,7 @@ module.exports = class extends Base {
         product_id: productId,
         goods_sn: productInfo.goods_sn,
         goods_name: goodsInfo.name,
-        primary_pic_url: goodsInfo.primary_pic_url,
+        list_pic_url: goodsInfo.primary_pic_url,
         number: number,
         session_id: 1,
         user_id: this.getLoginUserId(),
@@ -229,15 +229,17 @@ module.exports = class extends Base {
    * @returns {Promise.<void>}
    */
   async checkoutAction() {
-    const addressId = this.get('addressId'); // 收货地址id
+    // const addressId = this.get('addressId'); // 收货地址id
     // const couponId = this.get('couponId'); // 使用的优惠券id
 
     // 选择的收货地址
     let checkedAddress = null;
-    if (addressId) {
-      checkedAddress = await this.model('address').where({is_default: 1, user_id: this.getLoginUserId()}).find();
+    const defaultAddress = await this.model('address').where({is_default: 1, user_id: this.getLoginUserId()}).select();
+    const firstAddress = await this.model('address').where({user_id: this.getLoginUserId()}).select();
+    if (defaultAddress.length !== 0 || firstAddress.length !== 0) {
+      checkedAddress = defaultAddress[0] || firstAddress[0];
     } else {
-      checkedAddress = await this.model('address').where({id: addressId, user_id: this.getLoginUserId()}).find();
+      checkedAddress = {};
     }
 
     if (!think.isEmpty(checkedAddress)) {
