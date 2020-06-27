@@ -41,6 +41,24 @@ module.exports = class extends Base {
    * 添加或更新收货地址
    * @returns {Promise.<Promise|PreventPromise|void>}
    */
+  async addressDefaultAction() {
+    const addressId = this.post('id');
+
+    await this.model('address').where({id: addressId, user_id: this.getLoginUserId()}).update({is_default: 1});
+    // 如果设置为默认，则取消其它的默认
+    if (this.post('is_default') === true) {
+      await this.model('address').where({id: ['<>', addressId], user_id: this.getLoginUserId()}).update({
+        is_default: 0
+      });
+    }
+
+    return this.success();
+  }
+
+  /**
+   * 添加或更新收货地址
+   * @returns {Promise.<Promise|PreventPromise|void>}
+   */
   async saveAction() {
     let addressId = this.post('id');
 
