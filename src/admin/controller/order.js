@@ -20,8 +20,22 @@ module.exports = class extends Base {
       item.district_name = await this.model('region').where({ id: item.district }).getField('name', true);
       item.full_region = item.province_name + item.city_name + item.district_name + item.address;
       item.order_status_text = await this.model('order').getOrderStatusText(item.id);
+
+      // 订单的商品
+      item.goodsList = await this.model('order_goods').where({ order_id: item.id }).select();
+      item.goodsCount = 0;
+      item.goodsList.forEach(v => {
+        item.goodsCount += v.number;
+      });
+
+      // 订单状态的处理
+      item.order_status_text = await this.model('order').getOrderStatusText(item.id);
+
+      // 可操作的选项
+      item.handleOption = await this.model('order').getOrderHandleOption(item.id);
       newList.push(item);
     }
+
     data.data = newList;
     return this.success(data);
   }

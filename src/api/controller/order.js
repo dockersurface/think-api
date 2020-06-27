@@ -82,7 +82,7 @@ module.exports = class extends Base {
     if (think.isEmpty(checkedAddress)) {
       return this.fail('请选择收货地址');
     }
-    const freightPrice = 0.00;
+    const freightPrice = this.post('freightPrice');
 
     // 获取要购买的商品
     const checkedGoodsList = await this.model('cart').where({ user_id: this.getLoginUserId(), session_id: 1, checked: 1 }).select();
@@ -119,7 +119,7 @@ module.exports = class extends Base {
       city: checkedAddress.city_id,
       district: checkedAddress.district_id,
       address: checkedAddress.address,
-      freight_price: 0.00,
+      freight_price: freightPrice,
 
       // 留言
       postscript: this.post('postscript'),
