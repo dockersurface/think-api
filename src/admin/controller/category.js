@@ -6,8 +6,10 @@ module.exports = class extends Base {
    * @return {Promise} []
    */
   async indexAction() {
+    const page = this.get('page') || 1;
+    const size = this.get('size') || 10;
     const model = this.model('category');
-    const data = await model.where().order(['sort_order ASC']).countSelect();
+    const data = await model.where().order(['sort_order ASC']).page(page, size).countSelect();
     return this.success(data);
   }
 

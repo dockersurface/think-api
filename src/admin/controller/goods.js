@@ -57,7 +57,10 @@ module.exports = class extends Base {
 
     const values = this.post();
 
-    const product = await this.model('product').where({ goods_id: values.id }).select();
+    let product = '';
+    if (values.id) {
+      product = await this.model('product').where({ goods_id: values.id }).select();
+    }
 
     if (product.length !== 0) {
       await this.model('product').where({goods_id: values['id']}).update({
