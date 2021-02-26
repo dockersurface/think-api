@@ -24,8 +24,9 @@ module.exports = class extends Base {
 
   async getAccessTokenAction() {
     const code = this.get('code');
+    console.log(code)
 
     const res = await axios.get(`https://open.douyin.com/oauth/access_token?client_key=awdh9y4t36b0b4fx&client_secret=d07c7a010d8faab0641a8df70ec1db6e&code=${code}&grant_type=authorization_code`)
-    return this.success(res.data.data);
+    return this.success(res.data);
   }
 };
