@@ -11,7 +11,8 @@ module.exports = {
     'brand',
     'search',
     'region',
-    'douyin'
+    'douyin',
+    'merchant'
   ],
 
   // 可以公开访问的Action
