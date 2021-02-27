@@ -63,7 +63,8 @@ module.exports = class extends Base {
         province: userInfo.province,
         city: userInfo.city,
         country: userInfo.country,
-        union_id: userInfo.union_id
+        union_id: userInfo.union_id,
+        client_key: userInfo.client_key
       });
     }
 
