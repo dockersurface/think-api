@@ -56,6 +56,7 @@ module.exports = class extends Base {
         register_time: parseInt(new Date().getTime() / 1000),
         register_ip: clientIp,
         mobile: '',
+        client_key: userInfo.client_key,
         open_id: userInfo.open_id,
         avatar: userInfo.avatar || '',
         gender: userInfo.gender || 1, // 性别 0：未知、1：男、2：女
@@ -64,7 +65,6 @@ module.exports = class extends Base {
         city: userInfo.city,
         country: userInfo.country,
         union_id: userInfo.union_id,
-        client_key: userInfo.client_key
       });
     }
 
