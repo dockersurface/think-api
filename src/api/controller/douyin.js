@@ -28,4 +28,13 @@ module.exports = class extends Base {
     const res = await axios.get(`https://open.douyin.com/oauth/access_token?client_key=awdh9y4t36b0b4fx&client_secret=d07c7a010d8faab0641a8df70ec1db6e&code=${code}&grant_type=authorization_code`)
     return this.success(res.data.data);
   }
+
+  async getUserInfo() {
+    const open_id = this.get('open_id');
+    const access_token = this.get("access_token");
+
+    const res = await axios.get(`https://open.douyin.com/oauth/userinfo?open_id=${open_id}&access_token=${access_token}`)
+    return this.success(res.data.data);
+  }
+
 };
