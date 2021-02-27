@@ -26,13 +26,18 @@ module.exports = class extends Base {
   }
 
   async getPageInfoAction() {
-    const m = this.get('m');
+    const mid = this.get('m');
     const vid = this.get('vid')
     const model = this.model('merchant_video');
-    console.log(m, vid)
-    const data = await model.where({mid: m}).find();
+    const data = await model.where({vid, mid}).find();
+    if(data.status == 0) { // 运行中 和 次数够用
 
-    console.log(data)
+    }
+
+    await model.where({vid, mid}).update({
+      scan_count: data.scan_count+1,
+    });
+
     return this.success(data);
   }
 
