@@ -1,5 +1,12 @@
 const Base = require('./base.js');
 const axios = require('axios');
+var FormData = require('form-data');
+let request = require('request');
+let fs = require('fs');
+let Promise = require('bluebird');
+let path = require('path');
+const fetch = require("node-fetch");
+const http = require('http')
 
 module.exports = class extends Base {
   /**
@@ -83,4 +90,78 @@ module.exports = class extends Base {
     return this.success(res.data.data);
   }
 
+
+  async publishVideoAction() {
+    const open_id = "920ddb7e-0234-4f89-9f57-f2eadaa6d696";
+    const access_token = "act.f95cba307b939ca6f63509b9b269a24fKfWbLgjMugSNigIfrO8QjRVZkxH7";
+    const video = this.get("video")
+
+    const uploadurl = `https://open.douyin.com/video/upload/?open_id=${open_id}&access_token=${access_token}`
+
+    let blob = await fetch(video).then(r => r.blob());
+    var bodyFormData = new FormData();
+    bodyFormData.append('video', JSON.stringify(blob), {
+      filename: '1614230553783779.mp4',
+      contentType: 'video/mp4',
+    }); 
+    // const formData = {
+      // Pass a simple key-value pair
+      // my_field: 'video',
+      // Pass data via Buffers
+      // my_buffer: Buffer.from([1, 2, 3]),
+      // Pass data via Streams
+      // my_file: video,
+      // Pass multiple values /w an Array
+      // attachments: [
+      //   fs.createReadStream(__dirname + '/attachment1.jpg'),
+      //   fs.createReadStream(__dirname + '/attachment2.jpg')
+      // ],
+      // Pass optional meta-data with an 'options' object with style: {value: DATA, options: OPTIONS}
+      // Use case: for some types of streams, you'll need to provide "file"-related information manually.
+      // See the `form-data` README for more information about options: https://github.com/form-data/form-data
+      // custom_file: {
+      //   value:  fs.createReadStream('/dev/urandom'),
+      //   options: {
+      //     filename: 'topsecret.jpg',
+      //     contentType: 'video/mp4'
+      //   }
+      // }
+    // };
+
+    // request.post({url:uploadurl, formData: formData, headers: {
+    //   'Content-Type': `multipart/form-data; boundary=${formData._boundary}`
+    // },}, function optionalCallback(err, httpResponse, body) {
+    //   if (err) {
+    //     return console.error('upload failed:', err);
+    //   }
+    //   console.log('Upload successful!  Server responded with:', body);
+    // });
+    const res = await axios({
+      method: 'post',
+      url: uploadurl,
+      data: bodyFormData,
+      headers: {
+        'Content-Type': `multipart/form-data; boundary=${bodyFormData._boundary}`,
+      }
+    });
+
+    const { video_id } = res.data.data.video;
+    // console.log(bodyFormData, '1234', video_id)
+
+    // 创建
+    const createUrl = `https://open.douyin.com/video/create/?open_id=${open_id}&access_token=${access_token}`
+    const create_resp = await axios({
+      method: 'post',
+      url: createUrl,
+      data: {
+        video_id,
+        text: "。。。。。。"
+      },
+      headers: {
+        'Content-Type': `application/json`,
+      }
+    });
+
+    return this.success(res.data.data);
+  }
 };
