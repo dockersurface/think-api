@@ -29,7 +29,7 @@ module.exports = class extends Base {
     return this.success(res.data.data);
   }
 
-  async getUserInfo() {
+  async getUserInfoAction() {
     const open_id = this.get('open_id');
     const access_token = this.get("access_token");
 
