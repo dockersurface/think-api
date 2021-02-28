@@ -92,8 +92,8 @@ module.exports = class extends Base {
 
 
   async publishVideoAction() {
-    const open_id = "920ddb7e-0234-4f89-9f57-f2eadaa6d696";
-    const access_token = "act.f95cba307b939ca6f63509b9b269a24fKfWbLgjMugSNigIfrO8QjRVZkxH7";
+    const open_id = this.get("open_id");
+    const access_token = this.get("access_token");
     const video = this.get("video")
 
     const uploadurl = `https://open.douyin.com/video/upload/?open_id=${open_id}&access_token=${access_token}`
