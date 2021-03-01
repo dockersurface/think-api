@@ -29,14 +29,14 @@ module.exports = class extends Base {
       return this.fail('登录失败');
     }
 
-    const userInfo = {
-      id: admin.id,
-      username: admin.username,
-      avatar: admin.avatar,
-      admin_role_id: admin.admin_role_id
-    };
+    // const userInfo = {
+    //   userid: admin.id,
+    //   name: admin.username,
+    //   avatar: admin.avatar,
+    //   admin_role_id: admin.admin_role_id
+    // };
 
-    return this.success({ token: sessionKey, userInfo: userInfo });
+    return this.success({ token: sessionKey, currentAuthority: admin.admin_role_id });
   }
 
   async registerAction() {
