@@ -30,9 +30,13 @@ module.exports = class extends Base {
   }
 
   async getAccessTokenAction() {
+    // const clientKey = "awdh9y4t36b0b4fx";
+    // const clientSecret = "d07c7a010d8faab0641a8df70ec1db6e";
+    const clientKey = "awrxyz31awr5mrev";
+    const clientSecret = "bded53fde01b85eb99e3c13189ca9a9e";
     const code = this.get('code');
 
-    const res = await axios.get(`https://open.douyin.com/oauth/access_token?client_key=awdh9y4t36b0b4fx&client_secret=d07c7a010d8faab0641a8df70ec1db6e&code=${code}&grant_type=authorization_code`)
+    const res = await axios.get(`https://open.douyin.com/oauth/access_token?client_key=${clientKey}&client_secret=${clientSecret}&code=${code}&grant_type=authorization_code`)
     return this.success(res.data.data);
   }
 

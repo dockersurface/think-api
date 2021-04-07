@@ -2,8 +2,8 @@ const Base = require('./base.js');
 
 module.exports = class extends Base {
   async loginAction() {
-    const username = this.post('username');
-    const password = this.post('password');
+    const username = this.post('account');
+    const password = this.post('pwd');
 
     const admin = await this.model('admin').where({ username: username }).find();
     if (think.isEmpty(admin)) {
@@ -36,7 +36,7 @@ module.exports = class extends Base {
     //   admin_role_id: admin.admin_role_id
     // };
 
-    return this.success({ token: sessionKey, currentAuthority: admin.admin_role_id });
+    return this.success({ token: sessionKey, currentAuthority: "admin" });
   }
 
   async registerAction() {

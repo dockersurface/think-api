@@ -17,6 +17,40 @@ module.exports = class extends Base {
   }
 
   async infoAction() {
+    // 根据token值获取用户id
+    this.ctx.state.token = this.ctx.header['authorization'] || '';
+    const tokenSerivce = think.service('token', 'admin');
+    this.ctx.state.userId = await tokenSerivce.getUserId(this.ctx.state.token);
+
+    const id = this.ctx.state.userId;
+    const model = this.model('admin');
+    const data = await model.where({id: id}).find();
+
+    return this.success(data);
+  }
+
+  async currentUserAction() {
+    // 根据token值获取用户id
+    this.ctx.state.token = this.ctx.header['authorization'] || '';
+    const tokenSerivce = think.service('token', 'admin');
+    this.ctx.state.userId = await tokenSerivce.getUserId(this.ctx.state.token);
+
+    const id = this.ctx.state.userId;
+    const model = this.model('admin');
+    const data = await model.where({id: id}).find();
+
+    const userInfo = {
+      ...data,
+      userid: data.id,
+      name: data.username,
+      avatar: data.avatar,
+      admin_role_id: data.admin_role_id
+    };
+
+    return this.success(userInfo);
+  }
+
+  async infoAction() {
     const id = this.get('id');
     const model = this.model('user');
     const data = await model.where({id: id}).find();
